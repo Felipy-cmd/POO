@@ -19,124 +19,113 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("============================================");
-        System.out.println("     SISTEMA DE E-COMMERCE — POO/UNIPAM    ");
-        System.out.println("============================================\n");
+        System.out.println("SISTEMA DE E-COMMERCE — POO/UNIPAM\n");
 
-        // ── PASSO 1: Tipo de cliente ──────────────────────────────────────────
         System.out.println("Você é:");
         System.out.println("  1 - Pessoa Física");
         System.out.println("  2 - Empresa");
-        System.out.print("Escolha: ");
+        System.out.print("Escolha: \n");
         int tipo = Integer.parseInt(sc.nextLine().trim());
 
         Cliente cliente = cadastrarCliente(tipo);
 
-        // ── PASSO 2: Registrar endereço ───────────────────────────────────────
-        System.out.println("\n--- ENDEREÇO ---");
-        System.out.print("Rua: ");
+        System.out.println("\nENDEREÇO");
+        System.out.print("Rua: \n");
         String rua = sc.nextLine();
-        System.out.print("Número: ");
+        System.out.print("Número: \n");
         String numero = sc.nextLine();
-        System.out.print("Bairro: ");
+        System.out.print("Bairro: \n");
         String bairro = sc.nextLine();
-        System.out.print("Cidade: ");
+        System.out.print("Cidade: \n");
         String cidade = sc.nextLine();
-        System.out.print("Estado (ex: MG): ");
+        System.out.print("Estado: \n");
         String estado = sc.nextLine();
-        System.out.print("CEP: ");
+        System.out.print("CEP: \n");
         String cep = sc.nextLine();
 
         Endereco endereco = new Endereco(rua, numero, bairro, cidade, estado, cep);
         cliente.registrarEndereco(endereco);
 
-        // ── PASSO 3: Forma de pagamento ───────────────────────────────────────
-        System.out.println("\n--- FORMA DE PAGAMENTO ---");
+        System.out.println("\nFORMA DE PAGAMENTO");
         System.out.println("  1 - PIX (15% de desconto!)");
         System.out.println("  2 - Cartão de Crédito");
         System.out.println("  3 - Cartão de Débito");
         System.out.println("  4 - Boleto");
-        System.out.print("Escolha: ");
+        System.out.print("Escolha: \n");
         int opcaoPag = Integer.parseInt(sc.nextLine().trim());
 
         switch (opcaoPag) {
             case 1 -> {
-                System.out.print("Sua chave PIX: ");
+                System.out.print("Sua chave PIX: \n");
                 String chave = sc.nextLine();
                 cliente.registrarFormaPagamento(new Pix(chave));
             }
             case 2 -> {
-                System.out.print("Número do cartão: ");
+                System.out.print("Número do cartão: \n");
                 String numCartao = sc.nextLine();
-                System.out.print("Parcelas: ");
+                System.out.print("Parcelas: \n");
                 int parcelas = Integer.parseInt(sc.nextLine().trim());
                 cliente.registrarFormaPagamento(new Credito(numCartao, parcelas));
             }
             case 3 -> {
-                System.out.print("Número do cartão: ");
+                System.out.print("Número do cartão: \n");
                 String numCartao = sc.nextLine();
                 cliente.registrarFormaPagamento(new Debito(numCartao));
             }
             case 4 -> {
-                System.out.print("Código de barras do boleto: ");
+                System.out.print("Código de barras do boleto: \n");
                 String codigo = sc.nextLine();
                 cliente.registrarFormaPagamento(new Boleto(codigo));
             }
-            default -> System.out.println("Opção inválida, pagamento não registrado.");
+            default -> System.out.println("Opção inválida.");
         }
 
-        // ── PASSO 4: Montar carrinho e fazer pedido ───────────────────────────
         Carrinho carrinho = new Carrinho();
 
-        System.out.println("\n--- ADICIONAR PRODUTOS AO CARRINHO ---");
+        System.out.println("\nADICIONAR PRODUTOS AO CARRINHO\n");
         String continuar = "s";
         while (continuar.equalsIgnoreCase("s")) {
-            System.out.print("Nome do produto: ");
+            System.out.print("Nome do produto: \n");
             String nomeProd = sc.nextLine();
             System.out.print("Preço: R$ ");
             double preco = Double.parseDouble(sc.nextLine().trim());
-            System.out.print("Quantidade: ");
+            System.out.print("Quantidade: \n");
             int qtd = Integer.parseInt(sc.nextLine().trim());
 
-            carrinho.adicionarProduto(new Produto(nomeProd, preco > 0 ? nomeProd : "", preco, qtd));
+            carrinho.adicionarProduto(new Produto(nomeProd, nomeProd, preco, qtd));
 
-            System.out.print("Adicionar mais um produto? (s/n): ");
+            System.out.print("Adicionar mais um produto? (s/n): \n");
             continuar = sc.nextLine();
         }
 
         carrinho.exibirCarrinho();
 
-        // Finaliza o pedido
-        System.out.println("Finalizando pedido...");
         Pedido pedido = new Pedido(cliente);
         carrinho.getItens().forEach(pedido::adicionarProduto);
         pedido.finalizar(cliente.getFormaPagamento());
         pedido.exibirPedido();
 
-        // Exibe resumo da conta
         cliente.exibirConta();
 
         System.out.println("Obrigado por comprar conosco!");
         sc.close();
     }
 
-    // ── Método auxiliar: cadastro de cliente ──────────────────────────────────
-
     static Cliente cadastrarCliente(int tipo) {
-        System.out.println("\n--- CRIAR CONTA ---");
-        System.out.print("Nome: ");
+        System.out.println("\nCRIAR CONTA\n");
+        System.out.print("Nome: \n");
         String nome = sc.nextLine();
-        System.out.print("E-mail: ");
+        System.out.print("E-mail: \n");
         String email = sc.nextLine();
-        System.out.print("CPF: ");
+        System.out.print("CPF: \n");
         String cpf = sc.nextLine();
-        System.out.print("Senha: ");
+        System.out.print("Senha: \n");
         String senha = sc.nextLine();
 
         if (tipo == 2) {
-            System.out.print("Razão Social: ");
+            System.out.print("Razão Social: \n");
             String razao = sc.nextLine();
-            System.out.print("CNPJ: ");
+            System.out.print("CNPJ: \n");
             String cnpj = sc.nextLine();
             return new ClienteEmpresa(nome, email, cpf, senha, cnpj, razao);
         }
